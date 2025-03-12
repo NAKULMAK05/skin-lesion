@@ -30,7 +30,20 @@ os.makedirs(UPLOAD_FOLDER, exist_ok=True)
 # Example class labels for your CNN
 CLASS_LABELS = ['bkl', 'nv', 'df', 'mel', 'vasc', 'bcc', 'akiec']
 
+@app.after_request
+def add_cors_headers(response):
+    response.headers.add("Access-Control-Allow-Origin", "https://skin-lesion-classifier-frontend.vercel.app")
+    response.headers.add("Access-Control-Allow-Headers", "Content-Type,Authorization")
+    response.headers.add("Access-Control-Allow-Methods", "GET,POST,PUT,DELETE,OPTIONS")
+    return response
+    
 @app.route("/predict", methods=["POST"])
+def predict_options():
+    response = app.make_default_options_response()
+    response.headers["Access-Control-Allow-Origin"] = "https://skin-lesion-classifier-frontend.vercel.app"
+    response.headers["Access-Control-Allow-Headers"] = "Content-Type,Authorization"
+    response.headers["Access-Control-Allow-Methods"] = "GET,POST,PUT,DELETE,OPTIONS"
+    return response
 @cross_origin(origins="https://skin-lesion-classifier-frontend.vercel.app")
 def predict():
     try:
