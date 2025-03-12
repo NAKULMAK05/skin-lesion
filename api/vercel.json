@@ -1,7 +1,7 @@
 {
   "version": 2,
   "functions": {
-    "api/index.py": {
+    "index.py": {
       "runtime": "python@3.9.13"
     }
   }
