@@ -21,6 +21,7 @@ nlp_model = joblib.load("path_to_trained_model.pkl")
 
 
 app = Flask(__name__)
+
 CORS(app, resources={r"/*": {"origins": "https://skin-lesion-classifier-frontend.vercel.app"}})
 
 UPLOAD_FOLDER = "uploads"
@@ -30,6 +31,7 @@ os.makedirs(UPLOAD_FOLDER, exist_ok=True)
 CLASS_LABELS = ['bkl', 'nv', 'df', 'mel', 'vasc', 'bcc', 'akiec']
 
 @app.route("/predict", methods=["POST"])
+@cross_origin(origins="https://skin-lesion-classifier-frontend.vercel.app")
 def predict():
     try:
         # 1) Check for image
