@@ -1,8 +1,8 @@
-opencv-python
-numpy
-pandas
-matplotlib
-Flask
-Flask-Cors
-tensorflow
-joblib
+Flask==3.1.0
+Flask-Cors==5.0.0
+matplotlib==3.10.0
+opencv-python==4.10.0.84
+numpy==1.26.4
+pandas==2.2.3
+tensorflow==2.18.0
+joblib==1.4.2
