@@ -141,3 +141,6 @@ def predict():
 
 if __name__ == "__main__":
     app.run(debug=True, port=5000)
+    
+# Expose the Flask app as the handler for Vercel
+handler = app
