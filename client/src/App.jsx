@@ -57,7 +57,7 @@ function App() {
       formData.append("sex", sex)
       formData.append("localization", localization)
 
-      const response = await axios.post("http://localhost:5000/predict", formData, {
+      const response = await axios.post("skin-lesion-classifier-backend.vercel.app/predict", formData, {
         headers: { "Content-Type": "multipart/form-data" },
       })
       setResult(response.data)
