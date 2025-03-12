@@ -69,7 +69,7 @@ The project is structured with a modern, responsive frontend built with React an
 
 <br/>
 
-Clone the Repository : 
+Clone the Repository : https://github.com/NAKULMAK05/skin-lesion-classifier.git 
 
 <br/>
 
