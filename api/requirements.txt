@@ -4,5 +4,5 @@ matplotlib==3.10.0
 opencv-python==4.10.0.84
 numpy==1.26.4
 pandas==2.2.3
-tensorflow==2.18.0
+tensorflow-cpu==2.18.0
 joblib==1.4.2
