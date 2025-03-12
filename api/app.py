@@ -28,7 +28,7 @@ os.makedirs(UPLOAD_FOLDER, exist_ok=True)
 # Example class labels for your CNN
 CLASS_LABELS = ['bkl', 'nv', 'df', 'mel', 'vasc', 'bcc', 'akiec']
 
-@app.route("/predict", methods=["POST"])
+@app.route("/predict1", methods=["POST"])
 def predict():
     try:
         # 1) Check for image
