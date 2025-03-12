@@ -1,0 +1,47 @@
+@import "tailwindcss";
+
+:root {
+  --primary: #3b82f6;
+  --primary-foreground: #ffffff;
+}
+
+.dark {
+  --primary: #60a5fa;
+  --primary-foreground: #ffffff;
+}
+
+@layer base {
+  body {
+    @apply bg-gray-50 text-gray-900;
+  }
+}
+
+@layer utilities {
+  .bg-primary {
+    background-color: var(--primary);
+  }
+
+  .text-primary {
+    color: var(--primary);
+  }
+
+  .border-primary {
+    border-color: var(--primary);
+  }
+
+  .animate-fadeIn {
+    animation: fadeIn 0.5s ease-out;
+  }
+
+  @keyframes fadeIn {
+    from {
+      opacity: 0;
+      transform: translateY(10px);
+    }
+    to {
+      opacity: 1;
+      transform: translateY(0);
+    }
+  }
+}
+
