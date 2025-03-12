@@ -34,7 +34,7 @@ def add_cors_headers(response):
     response.headers.add("Access-Control-Allow-Methods", "GET,POST,PUT,DELETE,OPTIONS")
     return response
 
-@app.route("/predict", methods=["POST", "OPTIONS"])
+@app.route("/predict2", methods=["POST", "OPTIONS"])
 @cross_origin(origins="https://skin-lesion-classifier-frontend.vercel.app")
 def predict():
     # Handle the preflight OPTIONS request
