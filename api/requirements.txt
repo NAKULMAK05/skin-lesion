@@ -1,12 +1,3 @@
-streamlit
-opencv-python
-facenet-pytorch
-torch
-Pillow
-numpy
-torchvision
-
-
 os-sys
 io
 base64
