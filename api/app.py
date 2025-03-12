@@ -19,8 +19,9 @@ segmentation_model = tf.keras.models.load_model("segmentation_model.h5")
 classification_model = tf.keras.models.load_model("not_overfitting.h5")
 nlp_model = joblib.load("path_to_trained_model.pkl")
 
+
 app = Flask(__name__)
-CORS(app)
+CORS(app, resources={r"/*": {"origins": "https://skin-lesion-classifier-frontend.vercel.app"}})
 
 UPLOAD_FOLDER = "uploads"
 os.makedirs(UPLOAD_FOLDER, exist_ok=True)
@@ -28,7 +29,7 @@ os.makedirs(UPLOAD_FOLDER, exist_ok=True)
 # Example class labels for your CNN
 CLASS_LABELS = ['bkl', 'nv', 'df', 'mel', 'vasc', 'bcc', 'akiec']
 
-@app.route("/predict1", methods=["POST"])
+@app.route("/predict", methods=["POST"])
 def predict():
     try:
         # 1) Check for image
