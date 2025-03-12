@@ -29,7 +29,7 @@ os.makedirs(UPLOAD_FOLDER, exist_ok=True)
 # Make sure these are in the correct order as used during training.
 CLASS_LABELS = ['bkl', 'nv', 'df', 'mel', 'vasc', 'bcc', 'akiec']
 
-@app.route("/predict", methods=["POST"])
+@app.route("/predict1", methods=["POST"])
 def predict():
     try:
         # 1) Check for image
