@@ -10,7 +10,7 @@ import pandas as pd
 import matplotlib.pyplot as plt
 
 from flask import Flask, request, jsonify
-from flask_cors import CORS
+from flask_cors import CORS, cross_origin
 import tensorflow as tf
 import joblib
 
@@ -19,9 +19,7 @@ segmentation_model = tf.keras.models.load_model("segmentation_model.h5")
 classification_model = tf.keras.models.load_model("not_overfitting.h5")
 nlp_model = joblib.load("path_to_trained_model.pkl")
 
-
 app = Flask(__name__)
-
 CORS(app, resources={r"/*": {"origins": "https://skin-lesion-classifier-frontend.vercel.app"}})
 
 UPLOAD_FOLDER = "uploads"
@@ -36,16 +34,18 @@ def add_cors_headers(response):
     response.headers.add("Access-Control-Allow-Headers", "Content-Type,Authorization")
     response.headers.add("Access-Control-Allow-Methods", "GET,POST,PUT,DELETE,OPTIONS")
     return response
-    
-@app.route("/predict", methods=["POST"])
-def predict_options():
-    response = app.make_default_options_response()
-    response.headers["Access-Control-Allow-Origin"] = "https://skin-lesion-classifier-frontend.vercel.app"
-    response.headers["Access-Control-Allow-Headers"] = "Content-Type,Authorization"
-    response.headers["Access-Control-Allow-Methods"] = "GET,POST,PUT,DELETE,OPTIONS"
-    return response
+
+@app.route("/predict", methods=["POST", "OPTIONS"])
 @cross_origin(origins="https://skin-lesion-classifier-frontend.vercel.app")
 def predict():
+    # Handle the preflight OPTIONS request
+    if request.method == "OPTIONS":
+        response = app.make_default_options_response()
+        response.headers["Access-Control-Allow-Origin"] = "https://skin-lesion-classifier-frontend.vercel.app"
+        response.headers["Access-Control-Allow-Headers"] = "Content-Type,Authorization"
+        response.headers["Access-Control-Allow-Methods"] = "GET,POST,PUT,DELETE,OPTIONS"
+        return response
+
     try:
         # 1) Check for image
         if "image" not in request.files:
@@ -84,8 +84,6 @@ def predict():
         top_idx = int(np.argmax(cnn_probs))
         top_class_label = CLASS_LABELS[top_idx] if top_idx < len(CLASS_LABELS) else "Unknown"
         top_class_conf = float(cnn_probs[top_idx])
-
-        # Build a string listing all class probabilities
         all_class_probs_str = ", ".join(
             f"{CLASS_LABELS[i]}: {cnn_probs[i]:.4f}" for i in range(len(CLASS_LABELS))
         )
@@ -100,38 +98,30 @@ def predict():
         nlp_pred = nlp_model.predict(input_df)[0]  # could be numeric or string label
 
         # 9) Combine predictions
-        # If NLP is numeric, combine with CNN. Otherwise, pick NLP as final.
         try:
             nlp_pred_numeric = float(nlp_pred)
-            # If we get here, NLP is numeric, so combine it with CNN probabilities
             combined_pred = (cnn_probs + nlp_pred_numeric) / 2.0
             final_idx = int(np.argmax(combined_pred))
             final_label = CLASS_LABELS[final_idx]
         except (ValueError, TypeError):
-            # If NLP output is not numeric, let's use the NLP class as final
             final_label = str(nlp_pred)
 
         # 10) Build the figure (2x2 subplots) with minimal text
         fig, axs = plt.subplots(2, 2, figsize=(12, 10))
-
-        # Top-left: CNN
         axs[0, 0].imshow(masked_img)
         axs[0, 0].axis("off")
         axs[0, 0].set_title("CNN", fontsize=12, pad=10)
 
-        # Top-right: NLP
         axs[0, 1].imshow(orig_img_rgb)
         axs[0, 1].axis("off")
         axs[0, 1].set_title("NLP", fontsize=12, pad=10)
 
-        # Bottom-left: U-Net segmentation
         overlay = orig_img_rgb.copy()
         overlay[mask_bin > 0.5] = [255, 0, 0]
         axs[1, 0].imshow(overlay)
         axs[1, 0].axis("off")
         axs[1, 0].set_title("Segmentation", fontsize=12, pad=10)
 
-        # Bottom-right: Combined
         axs[1, 1].imshow(orig_img_rgb)
         axs[1, 1].axis("off")
         axs[1, 1].set_title("Combined", fontsize=12, pad=10)
