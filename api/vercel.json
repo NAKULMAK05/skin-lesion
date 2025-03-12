@@ -1,8 +1,9 @@
 {
   "version": 2,
-  "functions": {
-    "*.py": {
-      "runtime": "python@3.9.13"
+  "builds": [
+    {
+      "src": "index.py",
+      "use": "@vercel/python"
     }
-  }
+  ]
 }
