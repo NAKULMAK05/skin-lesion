@@ -1,7 +1,7 @@
 {
   "version": 2,
   "functions": {
-    "index.py": {
+    "*.py": {
       "runtime": "python@3.9.13"
     }
   }
