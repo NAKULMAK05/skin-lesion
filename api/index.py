@@ -1,14 +1,3 @@
-import matplotlib
-matplotlib.use("Agg")  # Use non-interactive backend to avoid Tkinter usage
-
-import os
-import io
-import base64
-import cv2
-import numpy as np
-import pandas as pd
-import matplotlib.pyplot as plt
-
 from flask import Flask, request, jsonify
 from flask_cors import CORS, cross_originimport matplotlib
 matplotlib.use("Agg")  # Use non-interactive backend
